@@ -35,8 +35,17 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/bootstrap
     'bootstrap-vue/nuxt',
-    'nuxt-leaflet'
+    ['nuxt-leaflet', {}],
+    '@nuxtjs/axios',
     ],
+
+  axios: {
+    baseURL: "http://127.0.0.1:8000/api"
+  },
+  toast: {
+    position: 'top-right',
+    duration: 1000,
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
