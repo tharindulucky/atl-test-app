@@ -3,22 +3,21 @@
     <div class="container">
     <div class="row">
       <div class="col-md-6 mx-auto">
-        <h4>Please login here</h4>
+        <h4>Please register here</h4>
         <form>
           <div class="form-group">
+            <label for="exampleInputEmail1">Name</label>
+            <input type="text" class="form-control" v-model="name" placeholder="Enter name" required>
+          </div>
+          <div class="form-group">
             <label for="exampleInputEmail1">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            <input type="email" class="form-control" v-model="email" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" required>
           </div>
           <div class="form-group">
             <label for="exampleInputPassword1">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+            <input type="password" class="form-control" v-model="password" id="exampleInputPassword1" placeholder="Password" required>
           </div>
-          <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">Check me out</label>
-          </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="button" class="btn btn-primary" @click="register">Submit</button>
         </form>
       </div>
     </div>
@@ -27,8 +26,48 @@
 </template>
 
 <script>
-import Map from "../components/Map";
+
+import { required } from 'vuelidate'
+
 export default {
-  components: {Map}
+  name: "ReservePopup",
+  props:{
+    stall: Object
+  },
+
+  data() {
+    return {
+      name: null,
+      email: null,
+      password: null,
+    };
+  },
+
+  validations: {
+    name: {
+      required
+    },
+    email: {
+      required
+    },
+    password: {
+      required
+    }
+  },
+
+  methods:{
+
+    async register(){
+      const payload = {
+        name:this.name,
+        email:this.email,
+        password:this.password,
+      }
+      const response = await this.$store.dispatch("user/register", payload);
+      if(response !== null){
+        this.$router.push('/login')
+      }
+    }
+  }
 }
 </script>

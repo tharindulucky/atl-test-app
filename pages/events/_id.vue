@@ -20,14 +20,17 @@
               <h3 class="card-title">{{stall.name}}</h3>
               <p class="card-text">{{stall.description}}</p>
               <p class="card-text">{{stall.price}} LKR</p>
-              <button @click="openReservePopup(stall)" class="btn btn-success">Reserve</button>
+              <button v-if="stall.get_booking_rel == null" @click="openReservePopup(stall)" class="btn btn-success">Reserve</button>
+              <div v-else>
+                <button  disabled class="btn btn-success">Already booked!</button>
+                <br>Booked by : {{stall.get_booking_rel.company_name}}
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-{{selected_stall}}
-    <ReservePopup :stall="selected_stall"></ReservePopup>
+    <ReservePopup @emitRefresh="stallRefresh" :stall="selected_stall"></ReservePopup>
 
   </div>
 </template>
@@ -62,8 +65,19 @@ export default {
     },
 
     openReservePopup(stall){
+
+      const token = this.$store.getters['user/get_token'];
+
+      if(token === null){
+        this.$router.push('/login')
+      }
+
       this.selected_stall = stall;
       this.$bvModal.show("reserve_popup");
+    },
+
+    stallRefresh(){
+      this.getEvent();
     }
   }
 

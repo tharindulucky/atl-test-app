@@ -1,5 +1,7 @@
-const state = () => ({
+import Vuex from 'vuex'
 
+const state = () => ({
+  token: null
 });
 
 const getters = {
@@ -7,17 +9,22 @@ const getters = {
 };
 
 const mutations = {
-
+  SET_TOKEN: (state, token) => {
+    state.token = token;
+  },
 };
 
 const actions = {
-  async bookStall({commit}, payload){
-    try {
-      return await this.$axios.$post(`/events/`+payload.event_id+`/stalls/`+payload.stall_id+`/book`);
-    } catch (e) {
-      return e;
-    }
+
+
+  setToken ({ rootState }) {
+
+    let token = rootState.users.token
+    return token;
+
   },
+
+
 
 }
 

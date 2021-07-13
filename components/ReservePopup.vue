@@ -39,6 +39,8 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+
 export default {
   name: "ReservePopup",
   props:{
@@ -62,6 +64,7 @@ export default {
     },
 
     async makeReservation(){
+
       const payload = {
         company_name:this.company_name,
         company_logo:this.company_logo_blob,
@@ -69,9 +72,13 @@ export default {
         event_id: this.stall.event_id,
         stall_id: this.stall.id,
       }
-      const response = await this.$store.dispatch("booking/bookStall", payload);
-      console.log(response)
-    }
+      const response = await this.$store.dispatch("user/bookStall", payload);
+      if(response.response !== null){
+        this.$bvModal.hide("reserve_popup");
+        this.$emit('emitRefresh');
+      }
+    },
+
   }
 }
 </script>

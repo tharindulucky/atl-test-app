@@ -10,6 +10,7 @@
       </no-ssr>
     </div>
     <EventPopup :event="selected_event"></EventPopup>
+    <LoginReminder></LoginReminder>
   </div>
 </template>
 
@@ -17,24 +18,27 @@
 
 import { mapGetters } from "vuex";
 import {EventPopup} from './EventPopup'
+import {LoginReminder} from './LoginReminder'
 
 export default {
   name: "Map",
 
   data() {
     return {
-      selected_event: null
+      selected_event: null,
     };
   },
 
   computed: {
     ...mapGetters({
-      events: "events/getEvents"
+      events: "events/getEvents",
+      access_token: "user/get_token"
     }),
   },
 
   async mounted() {
     await this.getEvents();
+    this.loginRminder();
   },
 
   methods: {
@@ -45,6 +49,14 @@ export default {
     openEventPopup(event){
       this.selected_event = event;
       this.$bvModal.show("event_popup");
+    },
+
+    loginRminder(){
+      const token = this.$store.getters['user/get_token'];
+      console.log(token);
+      if(token === null){
+        this.$bvModal.show("reminder_popup");
+      }
     }
   }
 

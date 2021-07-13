@@ -22,6 +22,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -38,6 +39,25 @@ export default {
     ['nuxt-leaflet', {}],
     '@nuxtjs/axios',
     ],
+
+
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: {url: '/login', method: 'post', propertyName: 'data.access_token'},
+          logout: false,
+        },
+        tokenRequired: true,
+        tokenType: 'Bearer',
+      }
+    },
+    redirect: {
+      login: '/',
+      logout: '/',
+      user: false
+    }
+  },
 
   axios: {
     baseURL: "http://127.0.0.1:8000/api"
